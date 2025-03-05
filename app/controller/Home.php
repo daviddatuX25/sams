@@ -10,6 +10,6 @@ class Controller_Home {
 
     public function about() {
         echo View_Render::render("home.about", [], "About page");
-}
+        }
 }
 ?>
