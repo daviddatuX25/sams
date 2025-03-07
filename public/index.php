@@ -2,7 +2,7 @@
 require_once '../config/config.php';
 require_once '../routes/main.php';
 
-// Get the url path, excluding the base path
+// Router
 $requestUri = trim(str_replace(explode("/", trim(str_replace('index.php', '', $_SERVER['SCRIPT_NAME']), '/'))[0], "", strtolower(trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/'))), "/");
 foreach ($routes as $route => $handler) {
     // Convert :param to regex (\w+)

@@ -1,7 +1,0 @@
-.nav .active{
-    background-color: var(--bs-primary);
-    color: var(--bs-light);
-}
-.nav .active:hover {
-    color: var(--bs-light);
-}
