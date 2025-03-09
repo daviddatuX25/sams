@@ -1,7 +1,7 @@
 RewriteEngine On
 
 # Set base path (only needed if in a subfolder)
-RewriteBase /mvc/public
+RewriteBase /sams/public
 
 # Allow direct access to existing files and directories (CSS, JS, images)
 RewriteCond %{REQUEST_FILENAME} !-f
