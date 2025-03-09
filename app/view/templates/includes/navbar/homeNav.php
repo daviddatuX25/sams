@@ -1,6 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Student Attendance Monitoring System</a>
+    <a class="navbar-brand" href="#">
+      <img src="<?=BRAND_LOGO_PATH?>" alt="Brand Logo" width="150" height="50" class="d-inline-block align-top">
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#homeNav" aria-controls="homeNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>

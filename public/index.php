@@ -34,12 +34,12 @@ foreach ($routes as $route => $handler) {
             echo call_user_func_array([new $controller, $method], $matches);
             return;
         } else {
-            echo View_Render::render("404error", ["routeStr" => $requestUri, "message" => "Controller or method not found"], "404 Not Found");
+            echo View_Render::render("404error", ["routeStr" => $path, "message" => "Controller or method not found"], "404 Not Found");
             return;
         }
     }
 }
 
-echo View_Render::render("404error", ["routeStr" => $requestUri], "404 Not Found");
+echo View_Render::render("404error", ["routeStr" => $path], "Page not found");
 ?>
  
