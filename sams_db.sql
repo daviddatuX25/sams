@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2025 at 12:00 PM
+-- Generation Time: Mar 09, 2025 at 02:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -26,6 +26,8 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `attendance`
 --
+CREATE DATABASE IF NOT EXISTS `sams_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `sams_db`;
 
 CREATE TABLE `attendance` (
   `attendance_id` int(10) UNSIGNED NOT NULL,
@@ -221,6 +223,7 @@ CREATE TABLE `teacher_assignment` (
 
 CREATE TABLE `users` (
   `user_id` int(10) UNSIGNED NOT NULL,
+  `user_key` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `birthday` date DEFAULT NULL,
   `password_hash` varchar(255) NOT NULL,
@@ -256,7 +259,8 @@ ALTER TABLE `attendance_leave`
 -- Indexes for table `class`
 --
 ALTER TABLE `class`
-  ADD PRIMARY KEY (`class_id`);
+  ADD PRIMARY KEY (`class_id`),
+  ADD KEY `class_ibfk_1` (`teacher_id`);
 
 --
 -- Indexes for table `class_room_time_slots`
@@ -323,7 +327,8 @@ ALTER TABLE `teacher_assignment`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `unique_user_key` (`user_key`);
 
 --
 -- AUTO_INCREMENT for dumped tables

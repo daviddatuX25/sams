@@ -17,6 +17,7 @@ function getCleanPath() {
 $path = getCleanPath();
 
 // Route handler
+$routes = array_filter($routes); // Remove empty routes
 foreach ($routes as $route => $handler) {
     // Convert :param to regex (\w+)
     $pattern =  preg_replace('/:\w+/', '(\w+)', str_replace('/', '\/', trim($route, '/')));
@@ -28,11 +29,17 @@ foreach ($routes as $route => $handler) {
             $controller = $handler;
             $method = "index"; // Default method
         }
-        echo call_user_func_array([new $controller, $method], $matches);
-        return;
+
+        if (class_exists($controller) && method_exists($controller, $method)) {
+            echo call_user_func_array([new $controller, $method], $matches);
+            return;
+        } else {
+            echo View_Render::render("404error", ["routeStr" => $requestUri, "message" => "Controller or method not found"], "404 Not Found");
+            return;
+        }
     }
 }
 
-echo View_Render::render("404error", ["routeStr" => $path], "404 Not Found");
-
+echo View_Render::render("404error", ["routeStr" => $requestUri], "404 Not Found");
 ?>
+ 
