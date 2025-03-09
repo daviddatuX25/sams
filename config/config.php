@@ -6,5 +6,6 @@
 
     define('BASE_URL', '/sams');
     define('BASE_URL_PUBLIC', BASE_URL . '/public');
+    // Change public/.htaccess to RewriteBase /sams/public
     require_once 'autoload.php'
 ?>
