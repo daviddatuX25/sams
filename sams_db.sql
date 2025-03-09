@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2025 at 03:02 AM
+-- Generation Time: Mar 09, 2025 at 12:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,13 +54,14 @@ CREATE TABLE `attendance_leave` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `classes`
+-- Table structure for table `class`
 --
 
-CREATE TABLE `classes` (
+CREATE TABLE `class` (
   `class_id` int(10) UNSIGNED NOT NULL,
   `subject_id` int(10) UNSIGNED NOT NULL,
-  `teacher_id` int(10) UNSIGNED NOT NULL
+  `teacher_id` int(10) UNSIGNED NOT NULL,
+  `section` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -75,7 +76,8 @@ CREATE TABLE `class_room_time_slots` (
   `time_start` time NOT NULL,
   `time_end` time NOT NULL,
   `week_day` enum('mon','tue','wed','thu','fri','sat') NOT NULL,
-  `class_id` int(10) UNSIGNED NOT NULL
+  `class_id` int(10) UNSIGNED NOT NULL,
+  `status` enum('active','pending','archived') NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -89,20 +91,6 @@ CREATE TABLE `class_sessions` (
   `class_id` int(10) UNSIGNED NOT NULL,
   `open_datetime` datetime NOT NULL,
   `close_datetime` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `enrollments`
---
-
-CREATE TABLE `enrollments` (
-  `enrollment_id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `class_id` int(10) UNSIGNED NOT NULL,
-  `enrolled_datetime` datetime NOT NULL DEFAULT current_timestamp(),
-  `enrollment_term_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -184,6 +172,50 @@ CREATE TABLE `rooms` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `student_assignment`
+--
+
+CREATE TABLE `student_assignment` (
+  `enrollment_id` int(10) UNSIGNED NOT NULL,
+  `student_id` int(10) UNSIGNED NOT NULL,
+  `class_id` int(10) UNSIGNED NOT NULL,
+  `enrollment_datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `enrollment_term_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subject`
+--
+
+CREATE TABLE `subject` (
+  `subject_id` int(10) UNSIGNED NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `credits` tinyint(3) UNSIGNED NOT NULL DEFAULT 3,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `teacher_assignment`
+--
+
+CREATE TABLE `teacher_assignment` (
+  `assignment_id` int(10) UNSIGNED NOT NULL,
+  `teacher_id` int(10) UNSIGNED NOT NULL,
+  `class_id` int(10) UNSIGNED NOT NULL,
+  `assigned_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `enrollment_term_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -193,10 +225,11 @@ CREATE TABLE `users` (
   `birthday` date DEFAULT NULL,
   `password_hash` varchar(255) NOT NULL,
   `role` enum('student','teacher','admin') NOT NULL,
-  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
+  `status` enum('active','pending','archived') NOT NULL DEFAULT 'pending',
   `gender` varchar(50) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  `middle_name` varchar(255) NOT NULL
+  `middle_name` varchar(255) NOT NULL,
+  `bio` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -220,11 +253,10 @@ ALTER TABLE `attendance_leave`
   ADD KEY `idx_leave_status` (`status`);
 
 --
--- Indexes for table `classes`
+-- Indexes for table `class`
 --
-ALTER TABLE `classes`
-  ADD PRIMARY KEY (`class_id`),
-  ADD KEY `teacher_id` (`teacher_id`);
+ALTER TABLE `class`
+  ADD PRIMARY KEY (`class_id`);
 
 --
 -- Indexes for table `class_room_time_slots`
@@ -240,16 +272,6 @@ ALTER TABLE `class_room_time_slots`
 ALTER TABLE `class_sessions`
   ADD PRIMARY KEY (`class_session_id`),
   ADD KEY `class_id` (`class_id`);
-
---
--- Indexes for table `enrollments`
---
-ALTER TABLE `enrollments`
-  ADD PRIMARY KEY (`enrollment_id`),
-  ADD UNIQUE KEY `user_id` (`user_id`,`class_id`),
-  ADD KEY `idx_enrollment_user` (`user_id`),
-  ADD KEY `idx_enrollment_class` (`class_id`),
-  ADD KEY `enrollment_term_id` (`enrollment_term_id`);
 
 --
 -- Indexes for table `enrollment_term`
@@ -271,6 +293,31 @@ ALTER TABLE `notifications`
 ALTER TABLE `rooms`
   ADD PRIMARY KEY (`room_id`),
   ADD UNIQUE KEY `room_name` (`room_name`);
+
+--
+-- Indexes for table `student_assignment`
+--
+ALTER TABLE `student_assignment`
+  ADD PRIMARY KEY (`enrollment_id`),
+  ADD KEY `idx_enrollment_user` (`student_id`) USING BTREE,
+  ADD KEY `enrollment_term_id` (`enrollment_term_id`) USING BTREE,
+  ADD KEY `idx_enrollment_class` (`class_id`) USING BTREE;
+
+--
+-- Indexes for table `subject`
+--
+ALTER TABLE `subject`
+  ADD PRIMARY KEY (`subject_id`),
+  ADD UNIQUE KEY `code` (`code`);
+
+--
+-- Indexes for table `teacher_assignment`
+--
+ALTER TABLE `teacher_assignment`
+  ADD PRIMARY KEY (`assignment_id`),
+  ADD KEY `idx_teacher_class` (`teacher_id`,`class_id`),
+  ADD KEY `class_id` (`class_id`),
+  ADD KEY `fk_teacher_assignment_term` (`enrollment_term_id`);
 
 --
 -- Indexes for table `users`
@@ -295,9 +342,9 @@ ALTER TABLE `attendance_leave`
   MODIFY `attendance_leave_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `classes`
+-- AUTO_INCREMENT for table `class`
 --
-ALTER TABLE `classes`
+ALTER TABLE `class`
   MODIFY `class_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -311,12 +358,6 @@ ALTER TABLE `class_room_time_slots`
 --
 ALTER TABLE `class_sessions`
   MODIFY `class_session_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `enrollments`
---
-ALTER TABLE `enrollments`
-  MODIFY `enrollment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `enrollment_term`
@@ -335,6 +376,24 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `rooms`
   MODIFY `room_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `student_assignment`
+--
+ALTER TABLE `student_assignment`
+  MODIFY `enrollment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `subject`
+--
+ALTER TABLE `subject`
+  MODIFY `subject_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `teacher_assignment`
+--
+ALTER TABLE `teacher_assignment`
+  MODIFY `assignment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -360,37 +419,45 @@ ALTER TABLE `attendance_leave`
   ADD CONSTRAINT `attendance_leave_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `classes`
+-- Constraints for table `class`
 --
-ALTER TABLE `classes`
-  ADD CONSTRAINT `classes_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+ALTER TABLE `class`
+  ADD CONSTRAINT `class_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `class_room_time_slots`
 --
 ALTER TABLE `class_room_time_slots`
   ADD CONSTRAINT `class_room_time_slots_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `class_room_time_slots_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `classes` (`class_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `class_room_time_slots_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `class_sessions`
 --
 ALTER TABLE `class_sessions`
-  ADD CONSTRAINT `class_sessions_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`class_id`) ON DELETE CASCADE;
-
---
--- Constraints for table `enrollments`
---
-ALTER TABLE `enrollments`
-  ADD CONSTRAINT `enrollments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `enrollments_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `classes` (`class_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `enrollments_ibfk_3` FOREIGN KEY (`enrollment_term_id`) REFERENCES `enrollment_term` (`enrollment_term_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `class_sessions_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `notifications`
 --
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `student_assignment`
+--
+ALTER TABLE `student_assignment`
+  ADD CONSTRAINT `student_assignment_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `student_assignment_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `student_assignment_ibfk_3` FOREIGN KEY (`enrollment_term_id`) REFERENCES `enrollment_term` (`enrollment_term_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `teacher_assignment`
+--
+ALTER TABLE `teacher_assignment`
+  ADD CONSTRAINT `fk_teacher_assignment_term` FOREIGN KEY (`enrollment_term_id`) REFERENCES `enrollment_term` (`enrollment_term_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `teacher_assignment_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `teacher_assignment_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
