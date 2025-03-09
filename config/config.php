@@ -1,6 +1,6 @@
 <?php
     define("DB_HOST", "localhost");
-    define("DB_NAME", "lovebirds_weddings");
+    define("DB_NAME", "sams_db");
     define("DB_USER", "root");
     define("DB_PASS", "");
 
