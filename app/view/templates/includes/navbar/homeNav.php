@@ -7,19 +7,18 @@
     <div class="collapse navbar-collapse" id="homeNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" href="<?=BASE_URL?>/home/index">Home</a>
+          <a class="nav-link <?= $activeLink == "index" ? "active" : '' ?>" href="<?=BASE_URL?>/home/index">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">The Project</a>
+          <a class="nav-link <?= $activeLink == "project" ? "active" : '' ?>" href="<?=BASE_URL?>/home/project">The Project</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Creators</a>
+        <li class="nav-item ">
+          <a class="nav-link <?= $activeLink == "creator" ? "active" : '' ?>" href="<?=BASE_URL?>/home/creators">Creators</a>
         </li>
       </ul>
         <nav class="navbar-nav my-1 ml-auto">
-            <a class="btn btn-outline-light my-1" href="#">Login</a>
-            <a class="btn btn-outline-light my-1" href="#">Register</a>
-            <span class="navbar-text">Greetings, guest.</span>
+            <a class="btn btn-outline-light m-1 <?= $activeLink == "login" ? "bg-light text-dark" : '' ?>" href="<?=BASE_URL?>/home/login">Login</a>
+            <a class="btn btn-outline-light m-1 <?= $activeLink == "register" ? "bg-light text-dark" : '' ?>" href="<?=BASE_URL?>/home/register">Register</a>
         </nav>
     </div>
   </div>
