@@ -1,6 +1,7 @@
 <?php
 class Model_Db {
     private $db;
+    private $stmt;
 
     public function __construct(){
         
@@ -20,8 +21,8 @@ class Model_Db {
     // Executes a raw query on the database
     protected function query($sqlCode) {
         try {
-            $this->statement = $this->db->prepare($sqlCode);
-            return $this->statement->execute();
+            $this->stmt = $this->db->prepare($sqlCode);
+            return $this->stmt->execute();
         } catch (PDOException $e) {
             return false;
         }
@@ -44,11 +45,11 @@ class Model_Db {
     // Fetches a single result as an object (uses the last prepared statement)
     protected function readOne() {
         try {
-            if (!$this->statement) {
+            if (!$this->stmt) {
                 throw new Exception("No statement prepared. Call query() or another method first.");
             }
-            $this->statement->execute();
-            return $this->statement->fetch(PDO::FETCH_OBJ);
+            $this->stmt->execute();
+            return $this->stmt->fetch(PDO::FETCH_OBJ);
         } catch (Exception $e) {
             return false;
         }

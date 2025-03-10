@@ -5,7 +5,7 @@
             <img src="<?=BRAND_LOGO_PATH?>" alt="Brand Logo" width="50" height="50" class="d-inline-block align-top">
         </div>
         <div class="sidebar-brand-text mx-3">
-            SAMS
+            Student
         </div>
     </a>
     <!-- Divider -->
@@ -49,4 +49,12 @@
             <span>Profile Settings</span>
         </a>
     </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
 </ul>
