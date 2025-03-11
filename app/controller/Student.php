@@ -5,20 +5,24 @@ class Controller_Student{
         echo View_Render::render("student/dashboard", []);
         echo View_Render::render("includes/footer");
     }
-    public function classesToday($subpage = "index", $args){
+    public function classesToday($subpage = "index", $classSessionID = null){
         echo View_Render::render("includes/header",[], "Classes Today");
         echo View_Render::render('includes/navbar/includes/sidebarNav_header');
-        $studentClassSessions = new Model_business_studentClassSessions();
+        echo View_Render::render('includes/navbar/studentNav', ['activeLink' => 'todayClasses']);
+
+        $studentClassSessions = new Model_Business_studentClassSessions();
+
         switch ($subpage){
             case "index":
                 $todayClassesData = $studentClassSessions->getTodayClasses();
-                echo View_Render::render("student/attendance/classes_today", []);
+                    echo View_Render::render("student/attendance/classesToday", ["todayClassesData" => $todayClassesData]);
                 break;
             case "class_session":
-                if (isset($args)){
-                    $liveClassData = $studentClassSessions->getLiveClassData();
+                if (isset($classSessionID)){
+                    $liveClassData = $studentClassSessions->getLiveClassData($classSessionID);
                     echo View_Render::render("student/attendance/class_session", $liveClassData);
                 }
+                break;
             default:
                 echo View_Render::render("404",[],"Page not found");
             
@@ -29,12 +33,18 @@ class Controller_Student{
     public function timeline(){
         echo View_Render::render("includes/header",[], "Timeline");
         echo View_Render::render('includes/navbar/includes/sidebarNav_header');
+        echo View_Render::render('includes/navbar/studentNav', ['activeLink' => 'timeline']);
         echo View_Render::render("student/attendance/timeline", []);
         echo View_Render::render('includes/navbar/includes/sidebarNav_footer');
         echo View_Render::render("includes/footer");
     }
     public function leaveform(){
-        echo View_Render::render("student/profile_settings", [], "Profile Settings");
+        echo View_Render::render("includes/header",[], "Profile Settings");
+        echo View_Render::render('includes/navbar/includes/sidebarNav_header');
+        echo View_Render::render('includes/navbar/studentNav', ['activeLink' => 'profileSettings']);
+        echo View_Render::render("student/attendance/timeline", []);
+        echo View_Render::render('includes/navbar/includes/sidebarNav_footer');
+        echo View_Render::render("includes/footer");
     }
 }
 ?>

@@ -13,8 +13,10 @@ $routes = [
     "student" => "Controller_Student@dashboard",
     "student/index" => "Controller_Student@dashboard",
     "student/dashboard" => "Controller_Student@dashboard",
-    "student/attendance " => "Controller_Student@live",
-    "student/attendance/live" => "Controller_Student@live",
-    "student/attendance/records" => "Controller_Student@records"
+
+    "student/attendance " => "Controller_Student@classesToday",
+    "student/attendance/classes_today" => "Controller_Student@classesToday",
+    "student/attendance/class_session/:class_session/:class_session_id" => "Controller_Student@classesToday",
+    "student/attendance/timeline" => "Controller_Student@timeline"
 ];
 ?>

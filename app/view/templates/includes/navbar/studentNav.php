@@ -24,33 +24,33 @@
         Attendance
     </div>
     <li class="nav-item <?= ($activeLink == 'todayClasses') ? 'active' : '' ?>">
-        <a class="nav-link " href="<?=BASE_URL?>/student/dashboard">
+        <a class="nav-link " href="<?=BASE_URL?>/student/attendance/classes_today">
             <i class="fas fa-fw fa-door-open"></i>
             <span>Today Classes</span>
         </a>
     </li>
     <li class="nav-item <?= ($activeLink == 'timeline') ? 'active' : '' ?>">
-        <a class="nav-link " href="<?=BASE_URL?>/student/dashboard">
+        <a class="nav-link " href="<?=BASE_URL?>/student/attendance/timeline">
             <i class="fas fa-fw fa-calendar-alt"></i>
             <span>Timeline</span>
         </a>
     </li>
     <li class="nav-item <?= ($activeLink == 'leaveForm') ? 'active' : '' ?>">
-        <a class="nav-link " href="<?=BASE_URL?>/student/dashboard">
+        <a class="nav-link " href="<?=BASE_URL?>/student/leaveform">
             <i class="fas fa-fw fa-envelope-open-text"></i>
             <span>Leave form</span>
         </a>
     </li>
     <hr class="sidebar-divider">
     <li class="nav-item <?= ($activeLink == 'profileSettings') ? 'active' : '' ?>">
-        <a class="nav-link " href="<?=BASE_URL?>/student/dashboard">
+        <a class="nav-link " href="<?=BASE_URL?>/student/profile_settings">
             <i class="fas fa-user-circle"></i>
             <span>Profile Settings</span>
         </a>
     </li>
 
-    <li class="nav-item <?= ($activeLink == 'attendance') ? 'active' : '' ?>">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+    <li class="nav-item <?= ($activeLink == 'subjects') ? 'active' : '' ?>">
+        <a class="nav-link collapsed" href="<?=BASE_URL?>/student/subjects" data-toggle="collapse" data-target="#collapseOne"
             aria-expanded="true" aria-controls="collapseOne">
             <i class="fas fa-fw fa-book"></i>
             <span>Subjects</span>
@@ -58,8 +58,8 @@
         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">A.Y 2025-2026</h6>
-                <a class="collapse-item" href="">ADET</a>
-                <a class="collapse-item" href="">Hybrid</a>
+                <a class="collapse-item <?= ($activeLink == 'subjects_1') ? 'active' : '' ?>" href="<?=BASE_URL?>/student/subjects/1">ADET</a>
+                <a class="collapse-item <?= ($activeLink == 'subjects_2') ? 'active' : '' ?>" href="<?=BASE_URL?>/student/subjects/2">Hybrid</a>
 
         </div>
     </li>
