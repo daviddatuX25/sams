@@ -1,33 +1,18 @@
 <?php
 class Controller_Auth{
     public function login() {
-
-        if (isset($_POST["userKey"]) && isset($_POST["password"])) {
-            $userKey = $_POST["userKey"];
-            $password = $_POST["password"];
-
-            $user = new Model_User();
-            $user->setUsername($userKey);
-            $user->setPassword($password);
-
-            $userKeyVerified = $user->verifyUserKey();
-            $passwordVerified = $user->verifyPassword();
-
-            if ($userKeyVerified && $passwordVerified) {
-                $_SESSION["userKey"] = $userKey;
-                header("Location: " . BASE_URL);
-                return;
-            }
-        }
-
-        echo View_Render::render("auth/login", [
-            "usernameVerified" => NULL,
-            "passwordVerified" => NULL
-        ], "Login Page");
+        echo View_Render::render('includes/header');
+        echo View_Render::render('includes/navbar/homeNav', ["activeLink" => "login"]);
+        echo View_Render::render("home/login", [], "Login Page");
+        echo View_Render::render('includes/footer');
     }
 
     public function register() {
-        echo View_Render::render("auth/register", [], "Register Page");
+        echo View_Render::render('includes/header');
+        echo View_Render::render('includes/navbar/homeNav', ["activeLink" => "register"]);
+        echo View_Render::render("home/register", [], "Register Page");
+        echo View_Render::render('includes/footer');
+
     }
 }
 ?>

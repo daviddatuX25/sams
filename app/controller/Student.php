@@ -5,17 +5,17 @@ class Controller_Student{
         echo View_Render::render("student/dashboard", []);
         echo View_Render::render("includes/footer");
     }
-    public function classesToday($subpage = "index", $classSessionID = null){
+    public function liveClass($subpage = "index", $classSessionID = null){
         echo View_Render::render("includes/header",[], "Classes Today");
         echo View_Render::render('includes/navbar/includes/sidebarNav_header');
-        echo View_Render::render('includes/navbar/studentNav', ['activeLink' => 'todayClasses']);
+        echo View_Render::render('includes/navbar/studentNav', ['activeLink' => 'liveClass']);
 
         $studentClassSessions = new Model_Business_studentClassSessions();
 
         switch ($subpage){
             case "index":
                 $todayClassesData = $studentClassSessions->getTodayClasses();
-                    echo View_Render::render("student/attendance/classesToday", ["todayClassesData" => $todayClassesData]);
+                    echo View_Render::render("student/attendance/liveClass", ["todayClassesData" => $todayClassesData]);
                 break;
             case "class_session":
                 if (isset($classSessionID)){

@@ -23,10 +23,10 @@
     <div class="sidebar-heading">
         Attendance
     </div>
-    <li class="nav-item <?= ($activeLink == 'todayClasses') ? 'active' : '' ?>">
-        <a class="nav-link " href="<?=BASE_URL?>/student/attendance/classes_today">
+    <li class="nav-item <?= ($activeLink == 'liveClass') ? 'active' : '' ?>">
+        <a class="nav-link " href="<?=BASE_URL?>/student/attendance/live_class">
             <i class="fas fa-fw fa-door-open"></i>
-            <span>Today Classes</span>
+            <span>Live Class</span>
         </a>
     </li>
     <li class="nav-item <?= ($activeLink == 'timeline') ? 'active' : '' ?>">
