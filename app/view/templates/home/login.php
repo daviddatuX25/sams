@@ -1,5 +1,7 @@
-<?php echo View_Render::render('includes/header');?>
-
+<?php
+Controller_Main::render('includes/header');
+Controller_Main::render('includes/homeNav', ["activeLink" => "login"]);
+?>
 <style>
     .logo img {
         height: 150px; /* Increased height for the logo */
@@ -24,16 +26,18 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
-                                <form class="user">
+                                <form class="user" method="POST" action="<?=BASE_URL?>/login">
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
-                                            id="exampleInputId" aria-describedby="emailHelp"
-                                            placeholder="Enter ID-Number ex (E20-00123)">
+                                        <input type="text" class="form-control form-control-user" name="user_key"
+                                            placeholder="Enter user key or ID-Number ex (E20-00123)" value="<?=$lastUserKey ?? null?>" autocomplete="off">
+                                        <?= $userErrMsg ?? false  ? "<div class='text-danger'>$userErrMsg</p>" : null;?>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user"
+                                        <input type="password" name="password" class="form-control form-control-user"
                                             id="exampleInputPassword" placeholder="Password">
+                                        <?= $passErrMsg ?? false ? "<p class='pl-2 text-danger'>$passErrMsg</p>" : null;?>
                                     </div>
+                                    <p class="text-danger"><?=$errorMsg ?? NULL?></p>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
                                             <input type="checkbox" class="custom-control-input" id="customCheck">
@@ -41,9 +45,9 @@
                                                 Me</label>
                                         </div>
                                     </div>
-                                    <a href="<?=BASE_URL?>/student" class="btn btn-primary btn-user btn-block">
+                                    <button type="submit" name="submit" class="btn btn-primary btn-user btn-block">
                                         Login
-                                    </a>
+                                    </button>
                                     <hr>
                                 </form>
                                 <hr>
@@ -51,7 +55,7 @@
                                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                                 </div>
                                 <div class="text-center">
-                                    <a class="small" href="register.html">Create an Account!</a>
+                                    <a class="small" href="<?=BASE_URL?>/register">Create an Account!</a>
                                 </div>
                             </div>
                         </div>
@@ -61,5 +65,6 @@
         </div>
     </div>
 </div>
-
-<?php echo View_Render::render('includes/footer');?>
+<?php
+Controller_Main::render('includes/footer');
+?>

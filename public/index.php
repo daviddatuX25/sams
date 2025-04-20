@@ -21,8 +21,8 @@ $routes = array_filter($routes); // Remove empty routes
 foreach ($routes as $route => $handler) {
     // Convert :param to regex (\w+)
     $pattern =  preg_replace('/:\w+/', '(\w+)', str_replace('/', '\/', trim($route, '/')));
-    if (preg_match("/^$pattern$/", $path, $matches)) {
-        array_shift($matches); // Remove full match
+    if (preg_match("/^$pattern$/", $path, $matchedParams)) {
+        array_shift($matchedParams); // Remove full match
         if (strpos($handler, "@") !== false) {
             list($controller, $method) = explode("@", $handler);
         } else {
@@ -31,15 +31,17 @@ foreach ($routes as $route => $handler) {
         }
 
         if (class_exists($controller) && method_exists($controller, $method)) {
-            echo call_user_func_array([new $controller, $method], $matches);
+            echo call_user_func_array([new $controller, $method], $matchedParams);
             return;
         } else {
-            echo View_Render::render("404error", ["routeStr" => $path, "message" => "Controller or method not found"], "404 Not Found");
+            http_response_code(404);
+            Controller_Main::handle404($routePath = $path);
             return;
         }
     }
 }
+Controller_Main::handle404($routePath = $path);
 
-echo View_Render::render("404error", ["routeStr" => $path], "Page not found");
+
 ?>
  

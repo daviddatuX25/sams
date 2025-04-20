@@ -1,9 +1,11 @@
-<?php echo View_Render::render('includes/header',[],$pageTitle); ?>
+<?php
+ controller_Main::render("includes/header", [], $pageTitle);
+ controller_Main::render('includes/nav_portal/student/header', ['activeLink' => 'dashboard']);
+?>
 
-<?php echo View_Render::render('includes/navbar/studentNav',["activeLink" => "dashboard"]); ?>
-<div class="container-fluid">
-    <p>This is student dashboard content.</p>
-</div>
+<h1>This is Dashboard View</h1>
 
-<?php echo View_Render::render('includes/navbar/includes/sidebarNav_footer'); ?>
-<?php echo View_Render::render('includes/footer'); ?>
+
+<?php
+ controller_Main::render("includes/nav_portal/student/footer");
+?>

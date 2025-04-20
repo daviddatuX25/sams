@@ -1,22 +1,23 @@
 <?php
-$routes = [
+$routes = 
+[
 
-    "" => "Controller_Home@index",
-    "home" => "Controller_Home@index",
-    "home/index" => "Controller_Home@index",
+    "" => "controller_Home@index",
+    "home" => "controller_Home@index",
+    "home/index" => "controller_Home@index",
 
-    "home/project" => "Controller_Home@project",
-    "home/creators" => "Controller_Home@creators",
-    "home/login" => "Controller_Auth@login",
-    "home/register" => "Controller_Auth@register",
+    "home/project" => "controller_Home@project",
+    "home/creators" => "controller_Home@creators",
+    "login" => "controller_Auth@login",
+    "register" => "controller_Auth@register",
 
-    "student" => "Controller_Student@dashboard",
-    "student/index" => "Controller_Student@dashboard",
-    "student/dashboard" => "Controller_Student@dashboard",
-
-    "student/attendance " => "Controller_Student@classesToday",
-    "student/attendance/live_class" => "Controller_Student@liveClass",
-    "student/attendance/class_session/:class_session/:class_session_id" => "Controller_Student@live_class",
-    "student/attendance/timeline" => "Controller_Student@timeline"
+    // Routers to Student controllers
+        // Classes
+        "student" => "controller_student_Dashboard@index",
+        "student/dashboard" => "controller_student_Dashboard@index",
+        "student/classes" => "controller_student_Classes@index",
+    
+    // Routers to Teacher controllers
+        "teacher" => "controller_teacher_Main@index"
 ];
 ?>

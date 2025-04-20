@@ -1,3 +1,9 @@
+<?php
+Controller_Main::render('includes/header');
+Controller_Main::render('includes/homeNav', ["activeLink" => "index"]);
+
+?>
+
 <style>
     .parallax-section {
         background-image: url('<?=BASE_URL_PUBLIC?>/img/background/parallax.gif');
@@ -223,3 +229,7 @@
         <a href="#" class="btn btn-primary">View Project Updates</a>
     </div>
 </div>
+
+<?php
+Controller_Main::render('includes/footer');
+?>

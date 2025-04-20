@@ -19,8 +19,8 @@
         </li>
       </ul>
         <nav class="navbar-nav my-1 ml-auto">
-            <a class="btn btn-outline-light m-1 <?= $activeLink == "login" ? "bg-light text-dark" : '' ?>" href="<?=BASE_URL?>/home/login">Login</a>
-            <a class="btn btn-outline-light m-1 <?= $activeLink == "register" ? "bg-light text-dark" : '' ?>" href="<?=BASE_URL?>/home/register">Register</a>
+            <a class="btn btn-outline-light m-1 <?= $activeLink == "login" ? "bg-light text-dark" : '' ?>" href="<?=BASE_URL?>/login">Login</a>
+            <a class="btn btn-outline-light m-1 <?= $activeLink == "register" ? "bg-light text-dark" : '' ?>" href="<?=BASE_URL?>/register">Register</a>
         </nav>
     </div>
   </div>
