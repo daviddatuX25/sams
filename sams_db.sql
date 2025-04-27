@@ -83,19 +83,19 @@ BEGIN
 END$$
 DELIMITER ;
 
--- Table: class
-CREATE TABLE `class` (
+-- Table: subject_class (renamed from class)
+CREATE TABLE `subject_class` (
   `class_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `subject_id` int(10) UNSIGNED NOT NULL,
   `teacher_id` int(10) UNSIGNED NOT NULL,
   `section` varchar(10) NOT NULL,
   PRIMARY KEY (`class_id`),
   KEY `idx_class_teacher` (`teacher_id`),
-  CONSTRAINT `class_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+  CONSTRAINT `subject_class_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Table: class_room_time_slots
-CREATE TABLE `class_room_time_slots` (
+-- Table: schedule (renamed from class_room_time_slots)
+CREATE TABLE `schedule` (
   `rts_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `room_id` int(10) UNSIGNED NOT NULL,
   `time_start` time NOT NULL,
@@ -106,8 +106,8 @@ CREATE TABLE `class_room_time_slots` (
   PRIMARY KEY (`rts_id`),
   KEY `class_id` (`class_id`),
   KEY `idx_room_time` (`room_id`,`week_day`,`time_start`,`time_end`),
-  CONSTRAINT `class_room_time_slots_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`) ON DELETE CASCADE,
-  CONSTRAINT `class_room_time_slots_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE
+  CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`) ON DELETE CASCADE,
+  CONSTRAINT `schedule_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `subject_class` (`class_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table: class_sessions
@@ -118,7 +118,7 @@ CREATE TABLE `class_sessions` (
   `close_datetime` datetime NOT NULL,
   PRIMARY KEY (`class_session_id`),
   KEY `class_id` (`class_id`),
-  CONSTRAINT `class_sessions_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE
+  CONSTRAINT `class_sessions_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `subject_class` (`class_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table: attendance
@@ -174,7 +174,7 @@ CREATE TABLE `student_assignment` (
   KEY `idx_enrollment_class` (`class_id`),
   KEY `enrollment_term_id` (`enrollment_term_id`),
   CONSTRAINT `student_assignment_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  CONSTRAINT `student_assignment_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE,
+  CONSTRAINT `student_assignment_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `subject_class` (`class_id`) ON DELETE CASCADE,
   CONSTRAINT `student_assignment_ibfk_3` FOREIGN KEY (`enrollment_term_id`) REFERENCES `enrollment_term` (`enrollment_term_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -189,7 +189,7 @@ CREATE TABLE `teacher_assignment` (
   KEY `idx_teacher_class` (`teacher_id`,`class_id`),
   KEY `class_id` (`class_id`),
   CONSTRAINT `teacher_assignment_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  CONSTRAINT `teacher_assignment_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE,
+  CONSTRAINT `teacher_assignment_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `subject_class` (`class_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_teacher_assignment_term` FOREIGN KEY (`enrollment_term_id`) REFERENCES `enrollment_term` (`enrollment_term_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
