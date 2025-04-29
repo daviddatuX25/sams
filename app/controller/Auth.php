@@ -5,8 +5,9 @@ class Controller_Auth extends Controller_Protected{
         parent::__construct($isAuthPage = true, $controllerGroup = 'auth');
     }
 
-    public function createUserSession($userID){
 
+    public function pendingRegistration($data){
+        $this->render("home/pending_registration", $data);
     }
 
     public function login() {
@@ -31,7 +32,7 @@ class Controller_Auth extends Controller_Protected{
     }
 
     public function register() {
-        $userDB = new Model_User(null);
+        $userDB = new Model_User();
 
         if ($this->isAjaxRequest()){
             header('Content-Type: application/json');
@@ -53,7 +54,7 @@ class Controller_Auth extends Controller_Protected{
             if(!$errors){
                 $user = $userDB->createUser($validatedData);
                 $this->setCurrentUser($user);
-                $this->redirectToPortal();
+                $this->redirectToPortal($newlyLoggedIn = true, $controllerGroup = null);
             } else {
                 $this->render("home/register", ["errors" => $errors ?? null], "Register Error");
             }
@@ -109,5 +110,6 @@ class Controller_Auth extends Controller_Protected{
         }
         return $passwordError;
     }
+
 }
 ?>

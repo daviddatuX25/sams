@@ -10,6 +10,7 @@ $routes =
     "home/creators" => "controller_Home@creators",
     "login" => "controller_Auth@login",
     "register" => "controller_Auth@register",
+    "logout" => "controller_Protected@logout",
 
     // Routers to Student controllers
         // Classes

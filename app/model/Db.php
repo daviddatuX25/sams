@@ -67,10 +67,9 @@ class Model_Db {
         // Joins -> [ ["type" => "", "table" => "", "condition" => "" ], [],... ]
         // Where -> ["column" => "", "operator" => "", "value" => "" ]
     private function buildQuery($table, $columns = [], $where = [], $joins = [], $limit = null) {
-        $table = $table ?? $this->table;
         try {
             // Build SELECT clause
-            $select = empty($columns) || $columns === "*" ? '*' : implode(', ', $columns);
+            $select = empty($columns) || $columns === "*" ? ' * ' : implode(', ', $columns);
     
             // Build FROM clause
             $from = $table;
@@ -87,12 +86,12 @@ class Model_Db {
             // Build WHERE clause
             $whereConditions = [];
             $bindValues = [];
-            foreach ($where as $condition) {
-                if (!isset($condition['column'], $condition['operator'], $condition['value'])) {
+            foreach ($where as $condition) { // index 0 = column, 1 = operator, 2 = value
+                if (!isset($condition[0], $condition[1], $condition[2])) {
                     throw new PDOException('Invalid where condition');
                 }
-                $whereConditions[] = "{$condition['column']} {$condition['operator']} ?";
-                $bindValues[] = $condition['value'];
+                $whereConditions[] = "{$condition[0]} {$condition[1]} ?";
+                $bindValues[] = $condition[2];
             }
             $whereStmt = empty($whereConditions) ? '' : ' WHERE ' . implode(' AND ', $whereConditions);
     
@@ -109,7 +108,7 @@ class Model_Db {
             foreach ($bindValues as $index => $value) {
                 $this->bind($stmt, $index + 1, $value);
             }
-    
+            
             return ['stmt' => $stmt, 'sql' => $sql];
         } catch (PDOException $e) {
             return false;
@@ -118,17 +117,16 @@ class Model_Db {
     
     // Read helper: Returns one result or false
     public function readOne($table, $columns = [],  $where = [], $joins = []) {
-        $table = $table ?? $this->table;
         try {
             if (empty($where)) {
                 return false; // No where condition provided
             }
-    
+
             $result = $this->buildQuery($table, $columns, $where, $joins);
             if (!$result) {
                 return false;
             }
-    
+
             $stmt = $result['stmt'];
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -140,7 +138,6 @@ class Model_Db {
     
     // Read helper: Returns multiple results or empty array
     public function readAll($table, $columns = [], $where = [], $joins = [], $limit) {
-        $table = $table ?? $this->table;
         try {
             $result = $this->buildQuery($table, $columns,$where, $joins, $limit );
             if (!$result) {
@@ -157,7 +154,6 @@ class Model_Db {
 
     // Create function (returns last inserted ID on success)
     public function create($table, $data) {
-        $table = $table ?? $this->table;
         $columns = array_keys($data);
         $values = array_values($data);
         try {
@@ -174,7 +170,6 @@ class Model_Db {
     }
 
     public function update($table, $data, $where) {
-        $table = $table ?? $this->table;
         try {
             if (empty($data) || empty($where)) {
                 return false; // No data or where condition provided
@@ -218,7 +213,6 @@ class Model_Db {
     }
     
     public function delete($table, $where) {
-        $table = $table ?? $this->table;
         try {
             if (empty($where)) {
                 return false; // No where condition provided

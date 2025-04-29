@@ -2,13 +2,6 @@
 Controller_Main::render('includes/header');
 Controller_Main::render('includes/homeNav', ["activeLink" => "login"]);
 ?>
-<style>
-    .logo img {
-        height: 150px; /* Increased height for the logo */
-        width: auto; /* Maintain aspect ratio */
-    }
-</style>
-
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-xl-10 col-lg-12 col-md-9">
@@ -16,15 +9,18 @@ Controller_Main::render('includes/homeNav', ["activeLink" => "login"]);
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                            <div class="logo text-center">
-                                <img src="<?=BASE_URL_PUBLIC?>/img/brand_logo/black_on_trans.png" alt="SAM">
-                            </div>
+                        <div class="col-lg-6 d-none d-lg-flex bg-login-image justify-content-center align-items-center">
+                            <img
+                                src="<?=BASE_URL_PUBLIC?>/img/brand_logo/black_on_trans.png"
+                                alt="SAM"
+                                class="img-fluid"
+                                style="max-height: 100%; max-width: 100%;"
+                            >
                         </div>
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">Login Portal</h1>
                                 </div>
                                 <form class="user" method="POST" action="<?=BASE_URL?>/login">
                                     <div class="form-group">
