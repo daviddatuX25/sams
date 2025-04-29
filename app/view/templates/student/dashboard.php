@@ -8,4 +8,5 @@
 
 <?php
  controller_Main::render("includes/nav_portal/all_footer");
+ controller_Main::render("includes/footer");
 ?>

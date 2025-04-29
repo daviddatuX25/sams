@@ -61,9 +61,9 @@ Controller_Main::render('includes/homeNav', ["activeLink" => "index"]);
 <div class="parallax-section">
     <div class="container py-5">
         <h2 class="text-center text-white mb-4">Key Features of SAMS</h2>
-        <div class="row">
+        <div class="row no-gutters">
             <!-- Feature 1 -->
-            <div class="col-md-4">
+            <div class="col-md-4 p-2">
                 <div class="card feature-card shadow-sm">
                     <div class="card-body text-center">
                         <i class="fas fa-tachometer-alt fa-3x text-primary mb-3"></i>
@@ -74,7 +74,7 @@ Controller_Main::render('includes/homeNav', ["activeLink" => "index"]);
             </div>
 
             <!-- Feature 2 -->
-            <div class="col-md-4">
+            <div class="col-md-4 p-2">
                 <div class="card feature-card shadow-sm">
                     <div class="card-body text-center">
                         <i class="fas fa-bell fa-3x text-success mb-3"></i>
@@ -85,7 +85,7 @@ Controller_Main::render('includes/homeNav', ["activeLink" => "index"]);
             </div>
 
             <!-- Feature 3 -->
-            <div class="col-md-4">
+            <div class="col-md-4 p-2">
                 <div class="card feature-card shadow-sm">
                     <div class="card-body text-center">
                         <i class="fas fa-user-shield fa-3x text-warning mb-3"></i>
@@ -94,11 +94,8 @@ Controller_Main::render('includes/homeNav', ["activeLink" => "index"]);
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row mt-4">
             <!-- Feature 4 -->
-            <div class="col-md-4">
+            <div class="col-md-4 p-2">
                 <div class="card feature-card shadow-sm">
                     <div class="card-body text-center">
                         <i class="fas fa-cloud fa-3x text-info mb-3"></i>
@@ -109,7 +106,7 @@ Controller_Main::render('includes/homeNav', ["activeLink" => "index"]);
             </div>
 
             <!-- Feature 5 -->
-            <div class="col-md-4">
+            <div class="col-md-4 p-2">
                 <div class="card feature-card shadow-sm">
                     <div class="card-body text-center">
                         <i class="fas fa-mobile-alt fa-3x text-danger mb-3"></i>
@@ -120,7 +117,7 @@ Controller_Main::render('includes/homeNav', ["activeLink" => "index"]);
             </div>
 
             <!-- Feature 6 -->
-            <div class="col-md-4">
+            <div class="col-md-4 p-2">
                 <div class="card feature-card shadow-sm">
                     <div class="card-body text-center">
                         <i class="fas fa-lock fa-3x text-secondary mb-3"></i>
