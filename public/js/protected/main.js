@@ -1,4 +1,5 @@
 function logout(redirectUrl) {
+    console.log('Logging out...');
     $.ajax({
         type: 'POST',
         url: redirectUrl,
