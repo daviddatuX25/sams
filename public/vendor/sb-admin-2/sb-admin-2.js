@@ -1,6 +1,5 @@
 (function($) {
   "use strict"; // Start of use strict
-
   // Toggle the side navigation
   $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
     $("body").toggleClass("sidebar-toggled");
@@ -8,6 +7,7 @@
     if ($(".sidebar").hasClass("toggled")) {
       $('.sidebar .collapse').collapse('hide');
     };
+    
   });
 
   // Close any open menu accordions when window is resized below 768px
@@ -44,13 +44,5 @@
     }
   });
 
-  // Smooth scrolling using jQuery easing
-  $(document).on('click', 'a.scroll-to-top', function(e) {
-    var $anchor = $(this);
-    $('html, body').stop().animate({
-      scrollTop: ($($anchor.attr('href')).offset().top)
-    }, 1000, 'easeInOutExpo');
-    e.preventDefault();
-  });
 
 })(jQuery); // End of use strict
